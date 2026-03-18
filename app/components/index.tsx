@@ -34,14 +34,42 @@ const styles: CSSProperties[] = [
 const App = () => {
   const params = useSearchParams();
   const slideCount = Number(params.get("slideCount") ?? DEFAULT_SLIDE_COUNT);
-  const loop = params.get("loop") === "true";
+  const loop = params.get("loop") === "on";
 
   return (
     <>
-      <div>
-        <p># of slides: {slideCount}</p>
-        <p>Loop: {loop ? "Enabled" : "Disabled"}</p>
-      </div>
+      <form
+        method="GET"
+        style={{
+          display: "grid",
+          gap: "10px",
+          backgroundColor: "#eee",
+          width: 300,
+        }}
+      >
+        Configuration:
+        <label>
+          # of slides:
+          <input
+            type="number"
+            name="slideCount"
+            defaultValue={slideCount}
+            className="border border-gray-300 rounded-md p-2"
+          />
+        </label>
+        <label>
+          Loop:
+          <input
+            type="checkbox"
+            name="loop"
+            defaultChecked={loop}
+            className="border border-gray-300 rounded-md p-2"
+          />
+        </label>
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md cursor-pointer hover:bg-blue-600 active:bg-blue-700">
+          Reload
+        </button>
+      </form>
       <EmblaCarousel
         slides={Array.from({ length: slideCount }, (_, index) => (
           <div
