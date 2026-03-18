@@ -43,10 +43,8 @@ export const useDotButton = (
 
       for (let k = 0; k < repeatTimes; k++) {
         const targetSnap = index + k * slidesCount;
-        const backward =
-          (currentSnap - targetSnap + totalSnaps) % totalSnaps;
-        const forward =
-          (targetSnap - currentSnap + totalSnaps) % totalSnaps;
+        const backward = (currentSnap - targetSnap + totalSnaps) % totalSnaps;
+        const forward = (targetSnap - currentSnap + totalSnaps) % totalSnaps;
         const dist = Math.min(backward, forward);
         const preferForward = forward <= backward; // 同距離の場合は右（次のスライド）へ
         if (dist < minDistance || (dist === minDistance && preferForward)) {

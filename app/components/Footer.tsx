@@ -1,10 +1,11 @@
-import React from 'react'
+import React from "react";
 
 const Footer = () => (
   <footer className="footer">
     <a
       className="footer__link"
-      href="https://github.com/davidjerleke/embla-carousel"
+      target="_blank"
+      href="https://github.com/rascalnoshippo/slider-test"
     >
       <svg
         className="footer__link__svg"
@@ -16,6 +17,6 @@ const Footer = () => (
       <span className="footer__link__text">Visit on GitHub</span>
     </a>
   </footer>
-)
+);
 
-export default Footer
+export default Footer;

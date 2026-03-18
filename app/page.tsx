@@ -3,27 +3,60 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EmblaCarousel from "./components/slider/EmblaCarousel";
-import type { EmblaOptionsType } from "embla-carousel";
 
 import "@/css/base.css";
 import "@/css/sandbox.css";
 import "@/css/embla.css";
+import { useSearchParams } from "next/navigation";
+import { CSSProperties } from "react";
 
-const OPTIONS: EmblaOptionsType = { loop: true };
-const SLIDE_COUNT = 2;
-const SLIDES = Array.from({ length: SLIDE_COUNT }, () => createRandomColor());
+const DEFAULT_SLIDE_COUNT = 2;
+
+const styles: CSSProperties[] = [
+  {
+    backgroundColor: "#64afff",
+    color: "#eee",
+  },
+  {
+    backgroundColor: "#ff4b40",
+    color: "#eee",
+  },
+  {
+    backgroundColor: "#b6ff40",
+    color: "#111",
+  },
+  {
+    backgroundColor: "#40f2f2",
+    color: "#111",
+  },
+  {
+    backgroundColor: "#ff409c",
+    color: "#eee",
+  },
+  {
+    backgroundColor: "#6474ff",
+    color: "#eee",
+  },
+];
 
 export default function Home() {
+  const params = useSearchParams();
+  const slideCount = Number(params.get("slideCount") ?? DEFAULT_SLIDE_COUNT);
+  const loop = params.get("loop") === "true";
+
   return (
     <>
       <Header />
+      <div>
+        <p># of slides: {slideCount}</p>
+        <p>Loop: {loop ? "Enabled" : "Disabled"}</p>
+      </div>
       <EmblaCarousel
-        slides={SLIDES.map((color, index) => (
+        slides={Array.from({ length: slideCount }, (_, index) => (
           <div
             key={index}
             style={{
-              backgroundColor: color,
-              color: calcTextColor(color),
+              ...styles[index % styles.length],
               width: "100%",
               height: "100%",
               display: "flex",
@@ -34,17 +67,11 @@ export default function Home() {
             {index + 1}
           </div>
         ))}
-        options={OPTIONS}
+        options={{ loop }}
       />
       <Footer />
     </>
   );
-}
-
-function createRandomColor() {
-  return `#${Math.floor(Math.random() * 16777215)
-    .toString(16)
-    .padStart(6, "0")}`;
 }
 
 function calcLuminance(color: string) {
