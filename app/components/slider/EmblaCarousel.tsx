@@ -11,14 +11,18 @@ import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
 type PropType = {
   slides: ReactNode[];
   options?: EmblaOptionsType;
+  onIndexChange?: (index: number) => void;
 };
 
-const EmblaCarousel = ({ slides, options }: PropType) => {
+const EmblaCarousel = ({ slides, options, onIndexChange }: PropType) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
 
   const [repeatTimes, setRepeatTimes] = useState(1);
 
   useEffect(() => {
+    // @ts-expect-error デバッグ用
+    window.emblaApi = emblaApi;
+
     if (!emblaApi || !options?.loop) return;
 
     const totalSlideLength = emblaApi
@@ -33,6 +37,20 @@ const EmblaCarousel = ({ slides, options }: PropType) => {
 
     queueMicrotask(() => setRepeatTimes(repeatTimes));
   }, [emblaApi, options?.loop]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const handleSelect = () => {
+      onIndexChange?.(emblaApi.selectedSnap() % slides.length);
+    };
+
+    emblaApi.on("select", handleSelect);
+
+    return () => {
+      emblaApi.off("select", handleSelect);
+    };
+  }, [emblaApi, slides.length, onIndexChange]);
 
   const { selectedIndex, dotIndices, onDotButtonClick } = useDotButton(
     emblaApi,

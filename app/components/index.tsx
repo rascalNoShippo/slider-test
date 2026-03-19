@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 import EmblaCarousel from "./slider/EmblaCarousel";
-import { CSSProperties } from "react";
+import { CSSProperties, useState } from "react";
 
 const DEFAULT_SLIDE_COUNT = 2;
 
@@ -36,6 +36,8 @@ const App = () => {
   const slideCount = Number(params.get("slideCount") ?? DEFAULT_SLIDE_COUNT);
   const loop = params.get("loop") === "on";
 
+  const [index, setIndex] = useState(0);
+
   return (
     <>
       <form
@@ -66,10 +68,16 @@ const App = () => {
             className="border border-gray-300 rounded-md p-2"
           />
         </label>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md cursor-pointer hover:bg-blue-600 active:bg-blue-700">
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded-md cursor-pointer hover:bg-blue-600 active:bg-blue-700"
+        >
           Reload
         </button>
       </form>
+      <div>
+        Current index: {index}
+      </div>
       <EmblaCarousel
         slides={Array.from({ length: slideCount }, (_, index) => (
           <div
@@ -87,7 +95,10 @@ const App = () => {
           </div>
         ))}
         options={{ loop }}
-      />{" "}
+        onIndexChange={(index) => {
+          setIndex(index);
+        }}
+      />
     </>
   );
 };
