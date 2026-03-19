@@ -2,10 +2,6 @@
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-
-import "@/css/base.css";
-import "@/css/sandbox.css";
-import "@/css/embla.css";
 import App from "./components";
 import { Suspense } from "react";
 

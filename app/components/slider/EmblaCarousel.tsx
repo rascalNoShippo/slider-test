@@ -7,6 +7,7 @@ import {
   usePrevNextButtons,
 } from "./EmblaCarouselArrowButtons";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
+import styles from "./EmblaCarousel.module.css";
 
 type PropType = {
   slides: ReactNode[];
@@ -65,31 +66,33 @@ const EmblaCarousel = ({ slides, options, onIndexChange }: PropType) => {
   } = usePrevNextButtons(emblaApi);
 
   return (
-    <div className="embla">
-      <div className="embla__viewport" ref={emblaRef}>
-        <div className="embla__container">
+    <div className={styles.embla}>
+      <div className={styles.viewport} ref={emblaRef}>
+        <div className={styles.container}>
           {repeatArray(slides, repeatTimes).map((element, index) => (
-            <div className="embla__slide" key={index}>
-              <div className="embla__slide__number">{element}</div>
+            <div className={styles.slide} key={index}>
+              <div className={styles.slideNumber}>{element}</div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="embla__controls">
-        <div className="embla__buttons">
+      <div className={styles.controls}>
+        <div className={styles.buttons}>
           <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
           <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
         </div>
 
-        <div className="embla__dots">
+        <div className={styles.dots}>
           {dotIndices.map((_, index) => (
             <DotButton
               key={index}
               onClick={() => onDotButtonClick(index)}
-              className={"embla__dot".concat(
-                index === selectedIndex ? " embla__dot--selected" : ""
-              )}
+              className={
+                index === selectedIndex
+                  ? `${styles.dot} ${styles.dotSelected}`
+                  : styles.dot
+              }
             />
           ))}
         </div>

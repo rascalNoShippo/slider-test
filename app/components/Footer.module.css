@@ -1,18 +1,10 @@
-.header {
-  font-size: 2rem;
-  font-weight: 700;
-  text-align: center;
-  padding: 4rem 2rem 2rem 2rem;
-  margin: 0;
-}
-
 .footer {
   display: flex;
   justify-content: center;
   padding: 2rem 2rem 4rem 2rem;
 }
 
-.footer__link {
+.link {
   display: flex;
   align-items: center;
   background-color: transparent;
@@ -23,7 +15,7 @@
   font-size: 1.4rem;
 }
 
-.footer__link__svg {
+.linkSvg {
   display: block;
   width: 2rem;
   height: 2rem;
