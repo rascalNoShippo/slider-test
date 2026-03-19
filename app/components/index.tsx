@@ -1,23 +1,23 @@
 import { useSearchParams } from "next/navigation";
 import EmblaCarousel from "./slider/EmblaCarousel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./App.module.css";
 
 const DEFAULT_SLIDE_COUNT = 2;
-
-const slideClasses = [
-  styles.slide1,
-  styles.slide2,
-  styles.slide3,
-  styles.slide4,
-  styles.slide5,
-  styles.slide6,
-];
+const PLACEHOLDER_COLOR = "transparent";
 
 const App = () => {
   const params = useSearchParams();
   const slideCount = Number(params.get("slideCount") ?? DEFAULT_SLIDE_COUNT);
   const loop = params.get("loop") === "on";
+
+  const [colors, setColors] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      setColors(Array.from({ length: slideCount }, () => randomColor()));
+    });
+  }, [slideCount]);
 
   const [index, setIndex] = useState(0);
 
@@ -47,14 +47,15 @@ const App = () => {
           Reload
         </button>
       </form>
-      <div>
-        Current index: {index}
-      </div>
+      <div className={styles.currentSlide}>Current slide: {index + 1}</div>
       <EmblaCarousel
         slides={Array.from({ length: slideCount }, (_, i) => (
           <div
             key={i}
-            className={`${styles.slide} ${slideClasses[i % slideClasses.length]}`}
+            style={{ backgroundColor: colors?.[i] ?? PLACEHOLDER_COLOR }}
+            className={styles.slide}
+            data-index={i}
+            data-color={colors?.[i] ?? PLACEHOLDER_COLOR}
           >
             {i + 1}
           </div>
@@ -69,3 +70,9 @@ const App = () => {
 };
 
 export default App;
+const randomColor = () => {
+  const [r, g, b] = Array.from({ length: 3 }, () =>
+    Math.floor(Math.random() * 256)
+  );
+  return `rgb(${r}, ${g}, ${b})`;
+};
